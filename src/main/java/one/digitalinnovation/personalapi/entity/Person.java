@@ -25,6 +25,10 @@ public class Person {
     @Column(nullable = false, unique = true)
     private String cpf;
     private LocalDate birthDate;
+            //Chama a classe PersonService.createPerson(person)
+
+        //Chama a classe PersonService.createPerson(person)
+
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Phone> phones;
 

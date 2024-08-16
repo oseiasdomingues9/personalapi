@@ -31,6 +31,8 @@ public class personController {
     ///**READ**///
     @GetMapping
     public List<PersonDTO> listAll() {
+                //Chama a classe PersonService.createPerson(person)
+
         return personService.listAll();
     }
 
