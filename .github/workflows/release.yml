@@ -1,60 +1,83 @@
-name: Release
+name: Release Pipeline
+
 on:
   push:
     branches:
       - main
+
 jobs:
+  # 1️⃣ Job: Build do projeto com Gradle
   build:
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.get_tag.outputs.tag }}
+
     steps:
-      - name: Checkout
+      - name: Checkout do código
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set up JDK
+
+      - name: Configurar JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: "11"
           distribution: temurin
-      - name: Permission
+
+      - name: Permitir execução do Gradle
         run: chmod +x gradlew
-      - name: Build
+
+      - name: Compilar com Gradle
         run: ./gradlew build
-      - name: Set up Node.js
+
+  # 2️⃣ Job: Release com semantic-release e captura da tag
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get_tag.outputs.tag }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Install Node dependencies
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Run semantic-release
-        id: semantic
+      - name: Rodar semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-      - name: Get Git tag
+
+      - name: Capturar a nova tag criada
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0 || echo "no-tag")
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-      - name: Debug Tag
-        run: |
-          echo "Tag capturada: ${{ steps.get_tag.outputs.tag }}"
+
+      - name: Exibir tag gerada
+        run: | 
+          echo "Tag gerada: ${{ steps.get_tag.outputs.tag }}"
+
+  # 3️⃣ Job: Docker build/push com a tag criada
   docker:
-    needs: build
+    needs: release
     runs-on: ubuntu-latest
+
     steps:
-      - name: Print tag recebida
+      - name: Exibir tag recebida
+        run: | 
+          echo "Tag recebida do release: ${{ needs.release.outputs.tag }}"
+
+      - name: Simular docker build
         run: |
-          echo "Tag recebida do build: ${{ needs.build.outputs.tag }}"
-      - name: Simulate Docker Build
-        run: >
-          echo "🔧 docker build -t oseiasoliveira/tissbuilder-api:${{
-          needs.build.outputs.tag }} ."
-      - name: Simulate Docker Push
-        run: >
-          echo "🚀 docker push oseiasoliveira/tissbuilder-api:${{
-          needs.build.outputs.tag }}"
+          echo "🔧 docker build -t oseiasoliveira/tissbuilder-api:${{ needs.release.outputs.tag }} ."
+
+      - name: Simular docker push
+        run: |
+          echo "🚀 docker push oseiasoliveira/tissbuilder-api:${{ needs.release.outputs.tag }}"
