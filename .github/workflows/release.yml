@@ -1,57 +1,49 @@
+---
 name: Release
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
     run-name: Release ${{ github.ref_name }}
-
     outputs:
       tag: ${{ steps.get_tag.outputs.tag }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Essencial para que os tags estejam disponíveis
-
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          distribution: 'temurin'
-
+          java-version: "11"
+          distribution: temurin
       - name: Permission
         run: chmod +x gradlew
-
       - name: Build
         run: ./gradlew build
-
       - name: Get Git tag
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0 || echo "no-tag")
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-
       - name: Debug Tag
-        run: echo "Tag capturada: ${{ steps.get_tag.outputs.tag }}"
-
+        run: |
+          echo "Tag capturada: ${{ steps.get_tag.outputs.tag }}"
   docker:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Print tag recebida
-        run: echo "Tag recebida do build: ${{ needs.build.outputs.tag }}"
-
+        run: |
+          echo "Tag recebida do build: ${{ needs.build.outputs.tag }}"
       - name: Simulate Docker Build
-        run: |
-          echo "🔧 docker build -t oseiasoliveira/tissbuilder-api:${{ needs.build.outputs.tag }} ."
-
+        run: >
+          echo "🔧 docker build -t oseiasoliveira/tissbuilder-api:${{
+          needs.build.outputs.tag }} ."
       - name: Simulate Docker Push
-        run: |
-          echo "🚀 docker push oseiasoliveira/tissbuilder-api:${{ needs.build.outputs.tag }}"
+        run: >
+          echo "🚀 docker push oseiasoliveira/tissbuilder-api:${{
+          needs.build.outputs.tag }}"
