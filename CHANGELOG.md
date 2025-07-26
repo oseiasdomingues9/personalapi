@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.1...v1.0.2) (2025-07-26)
+
+
+### Bug Fixes
+
+* test 2 ([c4fe321](https://github.com/oseiasdomingues9/personalapi/commit/c4fe321f48644c82f89eb1a1c0d9f1ca315e137d))
+
 ## [1.0.1](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.0...v1.0.1) (2025-07-26)
 
 
