@@ -18,6 +18,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+          
+      - name: Permitir execução do gradlew
+        run: chmod +x gradlew
 
       - name: Clean with Gradle
         run: ./gradlew clean
