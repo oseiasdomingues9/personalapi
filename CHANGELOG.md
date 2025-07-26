@@ -1,3 +1,16 @@
+## [1.0.4](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.3...v1.0.4) (2025-07-26)
+
+
+### Bug Fixes
+
+* change ([9ff2823](https://github.com/oseiasdomingues9/personalapi/commit/9ff2823c8a52f3e5dc0b7eaa23c4c62c3cb1f06f))
+* change 2 ([5979dca](https://github.com/oseiasdomingues9/personalapi/commit/5979dca95183fe72d740a7c8afa0a411afe7c0a0))
+* test 4 ([8ce6986](https://github.com/oseiasdomingues9/personalapi/commit/8ce698667d9e9fe893c91b1fc6886bd837581e5d))
+* teste ([6d8b281](https://github.com/oseiasdomingues9/personalapi/commit/6d8b281cd14bfc7c1bb9358a16ed17b5baba7dab))
+* teste 2 ([5577cdd](https://github.com/oseiasdomingues9/personalapi/commit/5577cddce822a2606538372e8704873ba10ed2fb))
+* teste 3 ([8e04193](https://github.com/oseiasdomingues9/personalapi/commit/8e041930dbe7d034e5a3cf2bf62a9863a56ea128))
+* teste 4 ([00d4570](https://github.com/oseiasdomingues9/personalapi/commit/00d4570ba178a39d879b9fdb02513abf19e74489))
+
 ## [1.0.3](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.2...v1.0.3) (2025-07-26)
 
 
