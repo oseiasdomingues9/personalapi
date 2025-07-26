@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
-      
+
 permissions:
   contents: write
   actions: write
@@ -28,3 +28,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Print Git Tag
+        run: echo "Tag usada: ${{ github.ref_name }}"
