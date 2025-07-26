@@ -22,6 +22,7 @@ public class Person {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
+    private Integer age;
     @Column(nullable = false, unique = true)
     private String cpf;
     private LocalDate birthDate;
