@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    run-name: Release ${{ github.ref_name }}
 
     outputs:
       tag: ${{ steps.get_tag.outputs.tag }}
@@ -15,13 +16,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Essencial para que os tags estejam disponíveis
 
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
-          
+
       - name: Permission
         run: chmod +x gradlew
 
@@ -32,14 +35,19 @@ jobs:
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0 || echo "no-tag")
-          echo "tag=$TAG"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Debug Tag
+        run: echo "Tag capturada: ${{ steps.get_tag.outputs.tag }}"
 
   docker:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - name: Print tag recebida
+        run: echo "Tag recebida do build: ${{ needs.build.outputs.tag }}"
+
       - name: Simulate Docker Build
         run: |
           echo "🔧 docker build -t oseiasoliveira/tissbuilder-api:${{ needs.build.outputs.tag }} ."
