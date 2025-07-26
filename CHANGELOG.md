@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.4...v1.0.5) (2025-07-26)
+
+
+### Bug Fixes
+
+* pipeline ([f4aaa5d](https://github.com/oseiasdomingues9/personalapi/commit/f4aaa5df17ac4466792f65cd77009243b3707d71))
+
 ## [1.0.4](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.3...v1.0.4) (2025-07-26)
 
 
