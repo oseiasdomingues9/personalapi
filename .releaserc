@@ -10,13 +10,6 @@
         "assets": ["CHANGELOG.md"]
       }
     ],
-    [
-      "@semantic-release/github",
-      {
-        "labels": false,
-        "failComment": false,
-        "failTitle": false,
-        "successComment": false}
-    ]
+    "@semantic-release/github"
   ]
 }
