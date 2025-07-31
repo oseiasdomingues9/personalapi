@@ -1,5 +1,3 @@
-name: Release Pipeline
-
 on:
   push:
     branches:
@@ -34,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.get_tag.outputs.tag }}
+      released: ${{ steps.semantic.outputs.released }}
 
     steps:
       - name: Checkout do código
@@ -50,9 +49,11 @@ jobs:
         run: npm ci
 
       - name: Rodar semantic-release
+        id: semantic   
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: | 
+          npx semantic-release && echo "released=true" >> $GITHUB_OUTPUT || echo "released=false" >> $GITHUB_OUTPUT
 
       - name: Capturar a nova tag criada
         id: get_tag
@@ -68,7 +69,7 @@ jobs:
   docker:
     needs: release
     runs-on: ubuntu-latest
-    if: needs.release.outputs.tag != 'no-tag'
+    if: needs.release.outputs.released == 'true'
 
     steps:
       - name: Exibir tag recebida
