@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.5...v1.1.0) (2025-07-26)
+
+
+### Features
+
+* add age in Person ([ca76abc](https://github.com/oseiasdomingues9/personalapi/commit/ca76abc77c4070822a5ed40591f80c39c347b82d))
+
 ## [1.0.5](https://github.com/oseiasdomingues9/personalapi/compare/v1.0.4...v1.0.5) (2025-07-26)
 
 
