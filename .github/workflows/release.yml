@@ -68,6 +68,7 @@ jobs:
   docker:
     needs: release
     runs-on: ubuntu-latest
+    if: needs.release.outputs.tag != 'no-tag'
 
     steps:
       - name: Exibir tag recebida
