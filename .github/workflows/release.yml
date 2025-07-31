@@ -64,6 +64,7 @@ jobs:
       - name: Exibir tag gerada
         run: | 
           echo "Tag gerada: ${{ steps.get_tag.outputs.tag }}"
+          echo "Release gerada: ${{ steps.semantic.outputs.released }}"
 
   # 3️⃣ Job: Docker build/push com a tag criada
   docker:
