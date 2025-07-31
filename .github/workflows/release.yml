@@ -26,58 +26,58 @@ jobs:
       - name: Compilar com Gradle
         run: ./gradlew build
 
-    release:
-      needs: build
-      runs-on: ubuntu-latest
-      outputs:
-        tag: ${{ steps.release_check.outputs.tag }}
-        released: ${{ steps.release_check.outputs.released }}
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release_check.outputs.tag }}
+      released: ${{ steps.release_check.outputs.released }}
 
-      steps:
-        - name: Checkout do código
-          uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        - name: Configurar Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: '20'
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-        - name: Instalar dependências
-          run: npm ci
+      - name: Instalar dependências
+        run: npm ci
 
-        - name: Capturar tag antes do semantic-release
-          id: pre_release_tag
-          run: |
-            echo "tag_pre=$(git describe --tags --abbrev=0 || echo '')" >> $GITHUB_OUTPUT
+      - name: Capturar tag antes do semantic-release
+        id: pre_release_tag
+        run: |
+          echo "tag_pre=$(git describe --tags --abbrev=0 || echo '')" >> $GITHUB_OUTPUT
 
-        - name: Rodar semantic-release
-          run: npx semantic-release
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rodar semantic-release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Capturar tag depois do semantic-release
-          id: post_release_tag
-          run: |
-            echo "tag_post=$(git describe --tags --abbrev=0 || echo '')" >> $GITHUB_OUTPUT
+      - name: Capturar tag depois do semantic-release
+        id: post_release_tag
+        run: |
+          echo "tag_post=$(git describe --tags --abbrev=0 || echo '')" >> $GITHUB_OUTPUT
 
-        - name: Comparar tags e definir se houve release
-          id: release_check
-          run: |
-            if [ "${{ steps.pre_release_tag.outputs.tag_pre }}" != "${{ steps.post_release_tag.outputs.tag_post }}" ]; then
-              echo "released=true" >> $GITHUB_OUTPUT
-              echo "tag=${{ steps.post_release_tag.outputs.tag_post }}" >> $GITHUB_OUTPUT
-            else
-              echo "released=false" >> $GITHUB_OUTPUT
-              echo "tag=" >> $GITHUB_OUTPUT
-            fi
+      - name: Comparar tags e definir se houve release
+        id: release_check
+        run: |
+          if [ "${{ steps.pre_release_tag.outputs.tag_pre }}" != "${{ steps.post_release_tag.outputs.tag_post }}" ]; then
+            echo "released=true" >> $GITHUB_OUTPUT
+            echo "tag=${{ steps.post_release_tag.outputs.tag_post }}" >> $GITHUB_OUTPUT
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+            echo "tag=" >> $GITHUB_OUTPUT
+          fi
 
-        - name: Exibir resultado
-          run: |
-            echo "Tag antiga: ${{ steps.pre_release_tag.outputs.tag_pre }}"
-            echo "Tag nova: ${{ steps.post_release_tag.outputs.tag_post }}"
-            echo "Release gerada: ${{ steps.release_check.outputs.released }}"
+      - name: Exibir resultado
+        run: |
+          echo "Tag antiga: ${{ steps.pre_release_tag.outputs.tag_pre }}"
+          echo "Tag nova: ${{ steps.post_release_tag.outputs.tag_post }}"
+          echo "Release gerada: ${{ steps.release_check.outputs.released }}"
 
   # 3️⃣ Job: Docker build/push com a tag criada
   docker:
